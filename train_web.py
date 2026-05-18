@@ -1,10 +1,10 @@
 """
-CartPole Q-Learning Web Server with WebSocket Streaming
+CartPole RL web server with WebSocket streaming.
 
-This FastAPI server trains a Q-learning agent and streams
-the training progress to a web browser in real-time via WebSocket.
+This FastAPI server runs CartPole methods and streams progress
+to a web browser in real time via WebSocket.
 
-The frontend (index.html) renders the CartPole on an HTML canvas
+The embedded frontend renders the CartPole on an HTML canvas
 and displays training statistics as they update.
 
 Run with: uvicorn train_web:app --reload
@@ -24,7 +24,7 @@ from model_based import LQRController
 from pathlib import Path
 
 
-app = FastAPI(title="CartPole Q-Learning Live Training")
+app = FastAPI(title="CartPole RL Visualizer")
 
 
 # HTML template for the frontend
@@ -34,7 +34,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CartPole Q-Learning - Live Training</title>
+    <title>CartPole RL Visualizer</title>
     <style>
         * {
             margin: 0;
@@ -249,8 +249,8 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h1>🎮 CartPole Q-Learning</h1>
-        <p class="subtitle">Watch the AI learn to balance the pole in real-time</p>
+        <h1>CartPole RL Visualizer</h1>
+        <p class="subtitle">Compare CartPole control methods in real time</p>
         
         <div class="content">
             <div class="canvas-container">
@@ -729,10 +729,10 @@ async def websocket_train(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     print("\n" + "="*60)
-    print("Starting CartPole Q-Learning Web Server")
+    print("Starting CartPole RL Web Server")
     print("="*60)
     print("\nOpen your browser and navigate to:")
-    print("  → http://localhost:8000")
+    print("  http://localhost:8000")
     print("\nPress Ctrl+C to stop the server")
     print("="*60 + "\n")
     

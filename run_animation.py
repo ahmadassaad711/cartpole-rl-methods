@@ -1,32 +1,56 @@
-"""
-Quick launcher for CartPole animations
-Simply run: python run_animation.py
-"""
-import sys
-import os
+"""Convenience launcher for the CartPole demos."""
 
-print("\n" + "="*70)
-print("CARTPOLE RL METHODS ANIMATION")
-print("="*70)
-print("\nThis will show sequential animations of:")
-print("  1. Policy Gradient (REINFORCE) - Purple (200 episodes)")
-print("  2. Q-Learning (Value-Based) - Blue (200 episodes)")  
-print("  3. Model-Based LQR (Optimal) - Red (50 episodes)")
-print("\nWatch the learning agents improve over time!")
-print("Close the Pygame window to exit early.")
-print("="*70 + "\n")
+from __future__ import annotations
 
-# Import and run the main animation
-try:
-    from animate_all_methods import main
+import argparse
+
+
+def run_pygame(args: argparse.Namespace) -> None:
+    from train_pygame import train_with_visualization
+
+    train_with_visualization(
+        num_episodes=args.episodes,
+        max_steps_per_episode=args.max_steps,
+        render_delay=args.delay,
+    )
+
+
+def run_web(args: argparse.Namespace) -> None:
+    import uvicorn
+
+    uvicorn.run(
+        "train_web:app",
+        host=args.host,
+        port=args.port,
+        reload=args.reload,
+    )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Launch CartPole RL demos.")
+    parser.add_argument(
+        "mode",
+        nargs="?",
+        default="pygame",
+        choices=("pygame", "web"),
+        help="Demo mode to run.",
+    )
+    parser.add_argument("--episodes", type=int, default=500, help="Episodes for the Pygame demo.")
+    parser.add_argument("--max-steps", type=int, default=500, help="Maximum steps per episode.")
+    parser.add_argument("--delay", type=int, default=0, help="Pygame render delay in milliseconds.")
+    parser.add_argument("--host", default="127.0.0.1", help="Web server host.")
+    parser.add_argument("--port", type=int, default=8000, help="Web server port.")
+    parser.add_argument("--reload", action="store_true", help="Enable uvicorn reload for development.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.mode == "web":
+        run_web(args)
+    else:
+        run_pygame(args)
+
+
+if __name__ == "__main__":
     main()
-except KeyboardInterrupt:
-    print("\n\nAnimation interrupted by user.")
-    sys.exit(0)
-except Exception as e:
-    print(f"\n\nError running animation: {e}")
-    print("\nMake sure you have all dependencies installed:")
-    print("  pip install gymnasium numpy pygame")
-    sys.exit(1)
-
-print("\nAnimation complete!")

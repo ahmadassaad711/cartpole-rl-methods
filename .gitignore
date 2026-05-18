@@ -1,0 +1,36 @@
+# Python environments and caches
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime outputs
+*.log
+logs/
+runs/
+results/
+artifacts/
+checkpoints/
+models/
+*.pt
+*.pth
+*.pkl
+*.pickle
+*.npz
+*.npy
+
+# Local editor and OS files
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Notebook/editor scratch
+.ipynb_checkpoints/
